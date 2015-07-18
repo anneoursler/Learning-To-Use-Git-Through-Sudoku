@@ -39,6 +39,7 @@ void Board::print()
     }
     cout << endl;
   }
+  cout << endl;
 }
 void Board::set_value(int x, int y, int value)
 {
@@ -75,21 +76,21 @@ bool Board::search_square(int x, int y, int value)
   if (x<3 && y<3){
     return search(0,3,0,3,value);
   }else if (x<3 && y<6){
-    return search(0,3,2,6,value);
+    return search(0,3,3,6,value);
   }else if (x<3 && y<9){
-    return search(0,3,5,9,value);
+    return search(0,3,6,9,value);
   }else if (x<6 && y<3){
-    return search(2,6,0,3,value);
+    return search(3,6,0,3,value);
   }else if (x<6 && y<6){
-    return search(2,6,2,6,value);
+    return search(3,6,3,6,value);
   }else if (x<6 && y<9){
-    return search(2,6,5,9,value);
+    return search(3,6,6,9,value);
   }else if (x<9 && y<3){
-    return search(5,9,0,3,value);
+    return search(6,9,0,3,value);
   }else if (x<9 && y<6){
-    return search(5,9,2,6,value);
+    return search(6,9,3,6,value);
   }else if (x<9 && y<9){
-   return search(5,9,5,9,value);
+   return search(6,9,6,9,value);
   }else{
     cout << "Error, Invalad Numbers" << endl;
     exit(1);
@@ -112,7 +113,7 @@ bool Board::finished()
 {
   for (int i=0; i<9; i++){
     for (int j=0; i<9; j++){
-      if(sudoku[i][j]==0){
+      if(sudoku[i][j] == 0){
 	return false;
       }
     }

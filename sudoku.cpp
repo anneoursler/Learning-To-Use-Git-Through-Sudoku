@@ -8,17 +8,25 @@ struct Possible{
   int length;
 };
 
+// TODO: add clause of imposible problems
+// TODO: shorten main()
+// BUG: Infinite Loop w/o final if statments
+// BUG: cout << endl; after final print to prevent segfault
+
 int main(){
   Board sudoku;
   sudoku.read_in();
   sudoku.print();
-  while (!sudoku.finished()){
+  int itts = 0;
+  while (sudoku.finished() == false){
     for (int i=0; i<9; i++){
       for (int j=0; j<9; j++){
-	if (sudoku.get_value(i,j)==0){
+	if (sudoku.get_value(i,j)==0){//If blank, try to fill
 	  Possible pos;
+	  // pos.x=i;
+	  // pos.y=j;
 	  pos.length = 0;
-	  for (int k=0; k<9; k++){
+	  for (int k=1; k<=9; k++){ //Find all possible numbers
 	    if (!sudoku.search_horizontal(j,k) &&
 		!sudoku.search_vertical(i,k)   &&
 		!sudoku.search_square(i,j,k)){
@@ -26,22 +34,22 @@ int main(){
 	      pos.length++;
 	    }
 	  }
-	  if (pos.length == 0){
-	    if (sudoku.finished()){
-	      sudoku.print();
-	    }else{
-	      cout << "Puzzle is imposible!" << endl;
-	    }
-	    sudoku.print();
-            
-	    return 0;
-	  }else if (pos.length == 1){
+	  if (pos.length == 1){//Fill blank
 	    sudoku.set_value(i,j,pos.options[0]);
+	    // cout << endl;
+	    //cout << i << "," << j << ":" << pos.options[0] << endl;
+	    // sudoku.print();
 	  }
 	}
       }
     }
+    if (itts == 1000){
+      break;
+    }
+    itts++;
   }
-  sudoku.print();
+  cout << "Solution: " << endl;
+  sudoku.print(); 
+  cout << endl;
   return 0;
 }
