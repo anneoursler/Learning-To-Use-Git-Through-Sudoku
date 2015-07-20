@@ -33,14 +33,21 @@ void Board::read_in()
 
 void Board::print()
 {
+  cout << "-------------" << endl;
   for (int i=0; i<9; i++){
     for (int j=0; j<9; j++){
+      if (j%3 == 0){
+	cout << "|";
+      }
       cout << sudoku[i][j];
     }
-    cout << endl;
+    cout << "|" << endl;
+    if (i%3 == 2){
+      cout << "-------------" << endl;
+    }
   }
-  cout << endl;
 }
+
 void Board::set_value(int x, int y, int value)
 {
   sudoku[x][y]=value;
@@ -112,7 +119,7 @@ bool Board::search(int xmin, int xmax, int ymin, int ymax, int value)
 bool Board::finished()
 {
   for (int i=0; i<9; i++){
-    for (int j=0; i<9; j++){
+    for (int j=0; j<9; j++){
       if(sudoku[i][j] == 0){
 	return false;
       }

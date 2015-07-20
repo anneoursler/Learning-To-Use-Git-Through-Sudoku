@@ -8,48 +8,45 @@ struct Possible{
   int length;
 };
 
-// TODO: add clause of imposible problems
-// TODO: shorten main()
-// BUG: Infinite Loop w/o final if statments
-// BUG: cout << endl; after final print to prevent segfault
+Board find_values(Board sudoku);
+// TODO: add clause of imposible problems?
+// BUG: cout near print to prevent segfault.
 
 int main(){
   Board sudoku;
   sudoku.read_in();
+
+  cout << "Puzzle: " << endl;
   sudoku.print();
-  int itts = 0;
-  while (sudoku.finished() == false){
-    for (int i=0; i<9; i++){
-      for (int j=0; j<9; j++){
-	if (sudoku.get_value(i,j)==0){//If blank, try to fill
-	  Possible pos;
-	  // pos.x=i;
-	  // pos.y=j;
-	  pos.length = 0;
-	  for (int k=1; k<=9; k++){ //Find all possible numbers
-	    if (!sudoku.search_horizontal(j,k) &&
-		!sudoku.search_vertical(i,k)   &&
-		!sudoku.search_square(i,j,k)){
-	      pos.options[pos.length] = k;
-	      pos.length++;
-	    }
+ 
+ while (sudoku.finished() == false){
+    sudoku = find_values(sudoku);
+  }
+
+  cout << "Solution: " << endl;
+  sudoku.print();
+  return 0;
+}
+
+Board find_values(Board sudoku){
+  for (int x=0; x<9; x++){
+    for (int y=0; y<9; y++){
+      if (sudoku.get_value(x,y)==0){//0 stands for a blank square  
+	Possible pos;
+	pos.length = 0;
+	for (int num=1; num<=9; num++){ //Find all valid values
+	  if (!sudoku.search_horizontal(y,num) &&
+	      !sudoku.search_vertical(x,num)   &&
+	      !sudoku.search_square(x,y,num)){
+	    pos.options[pos.length] = num;
+	    pos.length++;
 	  }
-	  if (pos.length == 1){//Fill blank
-	    sudoku.set_value(i,j,pos.options[0]);
-	    // cout << endl;
-	    //cout << i << "," << j << ":" << pos.options[0] << endl;
-	    // sudoku.print();
-	  }
+	}
+	if (pos.length == 1){//Fill blank if only one option remains
+	  sudoku.set_value(x,y,pos.options[0]); 
 	}
       }
     }
-    if (itts == 1000){
-      break;
-    }
-    itts++;
   }
-  cout << "Solution: " << endl;
-  sudoku.print(); 
-  cout << endl;
-  return 0;
+  return sudoku;
 }
